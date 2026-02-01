@@ -65,3 +65,5 @@ print(df_limpo.info())  # Exibe informações gerais sobre o DataFrame limpo
 # print(df_limpo.isnull().sum())  # Verifica valores nulos no DataFrame limpo
 
 df_limpo = df_limpo.assign(ano = df_limpo['ano'].astype('int64'))
+print(df_limpo.head(10))
+print(df_limpo.info())  # Exibe informações gerais sobre o DataFrame limpo após a conversão do tipo da coluna 'ano' para int64
