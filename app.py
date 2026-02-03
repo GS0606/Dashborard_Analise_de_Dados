@@ -163,7 +163,7 @@ def traduzir_valores(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 def processar_dados(url: str) -> pd.DataFrame:
     """
-    Processa os dados: carrega, traduz colunas e valores, e remove nulos.
+    Processa os dados: carrega, traduz colunas e valores, remove nulos e converte tipos.
     
     Args:
         url: URL do arquivo CSV
@@ -175,6 +175,9 @@ def processar_dados(url: str) -> pd.DataFrame:
     df = traduzir_colunas(df)
     df = traduzir_valores(df)
     df = df.dropna()
+    
+    # Converter ano para inteiro
+    df['ano'] = df['ano'].astype('int64')
     
     return df
 
