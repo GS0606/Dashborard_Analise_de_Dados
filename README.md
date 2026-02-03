@@ -7,7 +7,8 @@ Dashboard interativo desenvolvido em Streamlit para análise exploratória de da
 - **Interface Interativa**: Filtros dinâmicos para refinar análises
 - **Visualizações Interativas**: Gráficos interativos usando Plotly
 - **Métricas em Tempo Real**: KPIs atualizados conforme os filtros aplicados
-- **Dados Traduzidos**: Interface completamente em português brasileiro
+- **Interface Completamente em Português**: Todos os textos, legendas, eixos e cargos traduzidos
+- **Tradução Inteligente de Cargos**: Os cargos mais comuns são automaticamente traduzidos
 - **Responsivo**: Layout adaptável para diferentes tamanhos de tela
 
 ## 📋 Funcionalidades
@@ -19,10 +20,10 @@ Dashboard interativo desenvolvido em Streamlit para análise exploratória de da
 - Cargo mais frequente
 
 ### Visualizações
-1. **Top 10 Cargos por Salário Médio**: Gráfico de barras horizontal
-2. **Distribuição de Salários**: Histograma da distribuição salarial
+1. **Top 10 Cargos por Salário Médio**: Gráfico de barras horizontal com cargos traduzidos
+2. **Distribuição de Salários**: Histograma da distribuição salarial com eixos em português
 3. **Proporção de Tipos de Trabalho**: Gráfico de pizza (Presencial, Híbrido, Remoto)
-4. **Salário por País**: Mapa coroplético para Data Scientists
+4. **Salário por País**: Mapa coroplético para Cientistas de Dados com legendas em português
 
 ### Filtros Disponíveis
 - **Ano**: Filtro por ano de trabalho
@@ -107,12 +108,19 @@ O código foi desenvolvido seguindo princípios de **Clean Code**:
 
 ### Estrutura Modular
 
-- **Constantes**: Configurações e mapeamentos de tradução
-- **Processamento de Dados**: Carregamento, tradução e limpeza
+- **Constantes**: Configurações e mapeamentos de tradução (colunas, valores, cargos)
+- **Processamento de Dados**: Carregamento, tradução de colunas/valores/cargos e limpeza
 - **Cálculo de Métricas**: Funções para cálculo de KPIs
-- **Visualizações**: Funções para criação de gráficos
+- **Visualizações**: Funções para criação de gráficos com legendas em português
 - **Interface**: Funções para construção da UI
 - **Função Principal**: Orquestração do dashboard
+
+### Funções de Tradução
+
+O código inclui funções especializadas para tradução:
+- `traduzir_colunas()`: Traduz nomes das colunas
+- `traduzir_valores()`: Traduz valores categóricos (senioridade, contrato, etc.)
+- `traduzir_cargos_comuns()`: Traduz os cargos mais frequentes no dataset
 
 ## 📊 Fonte de Dados
 
@@ -123,16 +131,53 @@ https://raw.githubusercontent.com/guilhermeonrails/data-jobs/refs/heads/main/sal
 
 ## 🎨 Personalização
 
+### Traduções Implementadas
+
+O dashboard possui tradução completa para português brasileiro:
+
+#### Tradução de Colunas
+- Todas as colunas do dataset são traduzidas automaticamente
+- Exemplo: `work_year` → `ano`, `job_title` → `cargo`
+
+#### Tradução de Valores Categóricos
+- **Senioridade**: EN → junior, MI → Pleno, SE → Senior, EX → executivo
+- **Tipo de Contrato**: FT → Tempo Integral, PT → Meio Período, CT → Contrato, FL → Freelancer
+- **Tamanho da Empresa**: S → Pequena, M → Média, L → Grande
+- **Modalidade de Trabalho**: 0 → Presencial, 50 → Híbrido, 100 → Remoto
+
+#### Tradução de Cargos
+Os cargos mais comuns são automaticamente traduzidos, incluindo:
+- Data Scientist → Cientista de Dados
+- Data Engineer → Engenheiro de Dados
+- Data Analyst → Analista de Dados
+- Machine Learning Engineer → Engenheiro de Machine Learning
+- Research Team Lead → Líder de Equipe de Pesquisa
+- Analytics Engineering Manager → Gerente de Engenharia de Analytics
+- E muitos outros...
+
+#### Tradução de Legendas dos Gráficos
+- Todos os eixos dos gráficos estão em português
+- Títulos e labels traduzidos
+- Exemplo: "count" → "Frequência", "salary_in_usd" → "Salário (USD)"
+
 ### Modificar Traduções
 
 As traduções podem ser ajustadas nas constantes no início do arquivo `app.py`:
 
 ```python
+# Tradução de senioridade
 TRADUCAO_SENIORIDADE = {
     'EN': 'junior',
     'MI': 'Pleno',
     'SE': 'Senior',
     'EX': 'executivo'
+}
+
+# Tradução de cargos (função traduzir_cargos_comuns)
+traducao_cargos = {
+    'Data Scientist': 'Cientista de Dados',
+    'Data Engineer': 'Engenheiro de Dados',
+    # Adicione mais traduções aqui
 }
 ```
 
@@ -174,4 +219,15 @@ Desenvolvido como projeto de análise de dados e visualização.
 
 ---
 
-**Nota**: Este dashboard é uma ferramenta de análise exploratória. Os dados são atualizados conforme a fonte original.
+---
+
+## 🌐 Internacionalização
+
+O dashboard foi desenvolvido com foco na experiência do usuário brasileiro, oferecendo:
+
+- ✅ **100% em Português**: Interface, filtros, métricas e gráficos
+- ✅ **Cargos Traduzidos**: Os principais cargos do mercado são exibidos em português
+- ✅ **Legendas Claras**: Todos os eixos e labels dos gráficos estão traduzidos
+- ✅ **Fácil Extensão**: Sistema modular permite adicionar novas traduções facilmente
+
+**Nota**: Este dashboard é uma ferramenta de análise exploratória. Os dados são atualizados conforme a fonte original. Cargos que não possuem tradução específica são mantidos em inglês para preservar a precisão dos dados.

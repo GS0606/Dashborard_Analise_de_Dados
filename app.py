@@ -56,7 +56,7 @@ TRADUCAO_REMOTA = {
     100: 'Remoto'
 }
 
-CARGO_DATA_SCIENTIST = 'Data Scientist'
+CARGO_DATA_SCIENTIST = 'Cientista de Dados'
 NUMERO_BINS_HISTOGRAMA = 30
 TOP_CARGOS_LIMITE = 10
 HOLE_PIZZA = 0.5
@@ -100,6 +100,46 @@ def traduzir_colunas(dataframe: pd.DataFrame) -> pd.DataFrame:
     return dataframe.rename(columns=COLUNAS_TRADUZIDAS)
 
 
+def traduzir_cargos_comuns(cargo: str) -> str:
+    """
+    Traduz os cargos mais comuns para português.
+    
+    Args:
+        cargo: Nome do cargo em inglês
+        
+    Returns:
+        Nome do cargo traduzido ou original se não houver tradução
+    """
+    traducao_cargos = {
+        'Data Scientist': 'Cientista de Dados',
+        'Data Engineer': 'Engenheiro de Dados',
+        'Data Analyst': 'Analista de Dados',
+        'Machine Learning Engineer': 'Engenheiro de Machine Learning',
+        'Research Scientist': 'Cientista de Pesquisa',
+        'Data Science Manager': 'Gerente de Ciência de Dados',
+        'Data Architect': 'Arquiteto de Dados',
+        'Analytics Engineer': 'Engenheiro de Analytics',
+        'Business Intelligence Developer': 'Desenvolvedor de Business Intelligence',
+        'Data Science Consultant': 'Consultor de Ciência de Dados',
+        'Head of Data': 'Diretor de Dados',
+        'Principal Data Scientist': 'Cientista de Dados Principal',
+        'ML Engineer': 'Engenheiro de ML',
+        'Applied Scientist': 'Cientista Aplicado',
+        'Research Team Lead': 'Líder de Equipe de Pesquisa',
+        'Analytics Engineering Manager': 'Gerente de Engenharia de Analytics',
+        'Data Science Tech Lead': 'Líder Técnico de Ciência de Dados',
+        'Applied AI ML Lead': 'Líder de IA e ML Aplicados',
+        'Head of Applied AI': 'Diretor de IA Aplicada',
+        'Head of Machine Learning': 'Diretor de Machine Learning',
+        'Machine Learning Performance Engineer': 'Engenheiro de Performance de ML',
+        'Director of Product Management': 'Diretor de Gestão de Produtos',
+        'Engineering Manager': 'Gerente de Engenharia',
+        'AWS Data Architect': 'Arquiteto de Dados AWS'
+    }
+    
+    return traducao_cargos.get(cargo, cargo)
+
+
 def traduzir_valores(dataframe: pd.DataFrame) -> pd.DataFrame:
     """
     Traduz os valores das colunas categóricas para português.
@@ -116,6 +156,7 @@ def traduzir_valores(dataframe: pd.DataFrame) -> pd.DataFrame:
     df_traduzido['contrato'] = df_traduzido['contrato'].replace(TRADUCAO_CONTRATO)
     df_traduzido['tamanho_empresa'] = df_traduzido['tamanho_empresa'].replace(TRADUCAO_TAMANHO_EMPRESA)
     df_traduzido['remota'] = df_traduzido['remota'].replace(TRADUCAO_REMOTA)
+    df_traduzido['cargo'] = df_traduzido['cargo'].apply(traduzir_cargos_comuns)
     
     return df_traduzido
 
@@ -230,10 +271,12 @@ def criar_grafico_top_cargos(dataframe: pd.DataFrame) -> Optional[px.bar]:
         y='cargo',
         orientation='h',
         title="Top 10 cargos por salário médio",
-        labels={'salario_usd': 'Média salarial anual (USD)', 'cargo': ''}
+        labels={'salario_usd': 'Média salarial anual (USD)', 'cargo': 'Cargo'}
     )
     grafico.update_layout(
         title_x=0.1,
+        xaxis_title='Média salarial anual (USD)',
+        yaxis_title='',
         yaxis={'categoryorder': 'total ascending'}
     )
     
@@ -258,9 +301,13 @@ def criar_grafico_distribuicao_salarios(dataframe: pd.DataFrame) -> Optional[px.
         x='salario_usd',
         nbins=NUMERO_BINS_HISTOGRAMA,
         title="Distribuição de salários anuais",
-        labels={'salario_usd': 'Faixa salarial (USD)', 'count': ''}
+        labels={'salario_usd': 'Faixa salarial (USD)', 'count': 'Frequência'}
     )
-    grafico.update_layout(title_x=0.1)
+    grafico.update_layout(
+        title_x=0.1,
+        xaxis_title='Faixa salarial (USD)',
+        yaxis_title='Frequência'
+    )
     
     return grafico
 
@@ -325,9 +372,15 @@ def criar_grafico_salario_por_pais(dataframe: pd.DataFrame) -> Optional[px.choro
         color='salario_usd',
         color_continuous_scale='rdylgn',
         title='Salário médio de Cientista de Dados por país',
-        labels={'salario_usd': 'Salário médio (USD)', 'residencia': 'País'}
+        labels={
+            'salario_usd': 'Salário médio (USD)',
+            'residencia': 'País'
+        }
     )
-    grafico.update_layout(title_x=0.1)
+    grafico.update_layout(
+        title_x=0.1,
+        coloraxis_colorbar_title='Salário médio (USD)'
+    )
     
     return grafico
 
